@@ -6,30 +6,22 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-public class NovoItemRequest {
+public record NovoItemRequest(
 
-    @NotBlank
-    private final String nome;
-    @NotBlank
-    private final String descricao;
-    @NotBlank
-    private final String categoria;
-    @Positive
-    @NotNull
-    private final Integer quantidade;
-    @Positive
-    @NotNull
-    private final BigDecimal preco;
-
-    public NovoItemRequest(String nome, String descricao, String categoria, Integer quantidade, BigDecimal preco) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.categoria = categoria;
-        this.quantidade = quantidade;
-        this.preco = preco;
-    }
-
+        @NotBlank
+        String nome,
+        @NotBlank
+        String descricao,
+        @NotBlank
+        String categoria,
+        @NotNull
+        @Positive
+        Integer quantidade,
+        @NotNull
+        @Positive
+        BigDecimal preco
+) {
     public Item toModel() {
-        return new Item(nome,descricao,categoria,quantidade,preco);
+        return new Item(nome, descricao, categoria, quantidade, preco);
     }
 }

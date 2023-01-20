@@ -1,6 +1,8 @@
 package br.com.estoque.desafioia.item;
 
 import jakarta.persistence.*;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 
@@ -11,17 +13,24 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private  String nome;
+    private String nome;
     @Column(nullable = false)
-    private  String descricao;
+    private String descricao;
     @Column(nullable = false)
-    private  String categoria;
+    private String categoria;
     @Column(nullable = false)
-    private  Integer quantidade;
+    private Integer quantidade;
     @Column(nullable = false)
-    private  BigDecimal preco;
+    private BigDecimal preco;
 
     public Item(String nome, String descricao, String categoria, Integer quantidade, BigDecimal preco) {
+
+        Assert.isTrue(StringUtils.hasLength(nome), "nome é obrigatório");
+        Assert.isTrue(StringUtils.hasLength(descricao), "descricao é obrigatória");
+        Assert.isTrue(quantidade >= 0, "quantidade  deve ser positiva");
+        var converter = preco.intValue();
+        Assert.isTrue(converter >= 0, "preco  deve ser positivo");
+
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
@@ -30,8 +39,7 @@ public class Item {
     }
 
     /**
-     * @deprecated
-     * hibernate only
+     * @deprecated hibernate only
      */
     @Deprecated
     public Item() {
