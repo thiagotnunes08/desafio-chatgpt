@@ -13,6 +13,13 @@ class ItemTest {
     void test1() {
         var item = new Item("nome","descricao","categoria",1, BigDecimal.TEN);
 
+        Assertions.assertNotNull(item,"item deve ser válido");
+        Assertions.assertEquals(item.getNome(),"nome");
+        Assertions.assertEquals(item.getDescricao(),"descricao");
+        Assertions.assertEquals(item.getCategoria(),"categoria");
+        Assertions.assertEquals(item.getQuantidade(),1);
+        Assertions.assertEquals(item.getPreco(),BigDecimal.TEN);
+
     }
 
     @Test

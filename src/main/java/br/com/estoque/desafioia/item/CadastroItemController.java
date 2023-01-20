@@ -3,8 +3,6 @@ package br.com.estoque.desafioia.item;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,16 +13,9 @@ import java.net.URI;
 public class CadastroItemController {
 
     private final ItemRepository repository;
-    private final NomeItemUnicoValidator validator;
 
-    @InitBinder
-    public void init(WebDataBinder binder){
-        binder.addValidators(validator);
-    }
-
-    public CadastroItemController(ItemRepository repository, NomeItemUnicoValidator validator) {
+    public CadastroItemController(ItemRepository repository) {
         this.repository = repository;
-        this.validator = validator;
     }
 
     @PostMapping("/itens")

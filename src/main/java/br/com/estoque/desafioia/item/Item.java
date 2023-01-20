@@ -1,9 +1,7 @@
 package br.com.estoque.desafioia.item;
-
 import jakarta.persistence.*;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
 import java.math.BigDecimal;
 
 @Entity
@@ -25,11 +23,10 @@ public class Item {
 
     public Item(String nome, String descricao, String categoria, Integer quantidade, BigDecimal preco) {
 
-        Assert.isTrue(StringUtils.hasLength(nome), "nome é obrigatório");
-        Assert.isTrue(StringUtils.hasLength(descricao), "descricao é obrigatória");
+        Assert.isTrue(StringUtils.hasText(nome), "nome é obrigatório");
+        Assert.isTrue(StringUtils.hasText(descricao), "descricao é obrigatória");
         Assert.isTrue(quantidade >= 0, "quantidade  deve ser positiva");
-        var converter = preco.intValue();
-        Assert.isTrue(converter >= 0, "preco  deve ser positivo");
+        Assert.isTrue(preco.compareTo(BigDecimal.ZERO) >= 0, "preco  deve ser positivo");
 
         this.nome = nome;
         this.descricao = descricao;

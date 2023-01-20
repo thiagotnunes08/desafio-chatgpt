@@ -1,6 +1,7 @@
 package br.com.estoque.desafioia.item;
 
 
+import br.com.estoque.desafioia.compartilhado.CampoUnicoValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +15,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.util.Assert;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-
 import java.math.BigDecimal;
 
 @SpringBootTest
@@ -51,14 +52,18 @@ class CadastroItemControllerTest {
 
         var payload = mapper.writeValueAsString(itemRequest);
 
-        var request = MockMvcRequestBuilders.post("/itens")
+        var request = MockMvcRequestBuilders
+                .post("/itens")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload)
                 .header("Accept-Language","pt-br");
 
         mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.redirectedUrlPattern("http://localhost/itens/*"));
+                .andExpect(MockMvcResultMatchers
+                        .status()
+                        .isCreated())
+                .andExpect(MockMvcResultMatchers
+                        .redirectedUrlPattern("http://localhost/itens/*"));
 
 
        var list = repository.findAll();
@@ -84,8 +89,13 @@ class CadastroItemControllerTest {
                 .content(payload)
                 .header("Accept-Language","pt-br");
 
-        var resolvedException = mockMvc.perform(request)
-                .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn().getResolvedException();
+        var resolvedException = mockMvc
+                .perform(request)
+                .andExpect(MockMvcResultMatchers
+                        .status()
+                        .isBadRequest())
+                .andReturn()
+                .getResolvedException();
 
         Assertions.assertNotNull(resolvedException);
         Assertions.assertEquals(MethodArgumentNotValidException.class,resolvedException.getClass());
@@ -143,6 +153,48 @@ class CadastroItemControllerTest {
         Assertions.assertNotNull(resolvedException);
         Assertions.assertEquals(MethodArgumentNotValidException.class,resolvedException.getClass());
         Assertions.assertEquals(2,((MethodArgumentNotValidException)resolvedException).getErrorCount());
+
+    }
+
+    @Test
+    @DisplayName("nao cadastra item 2x, pois nome já eh existente")
+    void test5() throws Exception {
+
+        var itemRequest = new NovoItemRequest(
+                "arroz",
+                "graos",
+                "alimento",
+                10,
+                BigDecimal.TEN);
+
+        var payload = mapper.writeValueAsString(itemRequest);
+
+        var request = MockMvcRequestBuilders
+                .post("/itens")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload)
+                .header("Accept-Language","pt-br");
+
+        mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers
+                        .status()
+                        .isCreated())
+                .andExpect(MockMvcResultMatchers
+                        .redirectedUrlPattern("http://localhost/itens/*"));
+
+        var resolvedException = mockMvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn().getResolvedException();
+
+        var list = repository.findAll();
+
+        Assertions.assertEquals(1,list.size());
+
+        Assertions.assertNotNull(resolvedException);
+
+        Assertions.assertEquals(MethodArgumentNotValidException.class,resolvedException.getClass());
+
+        Assertions.assertEquals(1,((MethodArgumentNotValidException)resolvedException).getErrorCount());
+
 
     }
 }

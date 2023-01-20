@@ -3,5 +3,4 @@ package br.com.estoque.desafioia.item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemRepository extends JpaRepository<Item,Long> {
-    boolean existsByNome(String nome);
 }
