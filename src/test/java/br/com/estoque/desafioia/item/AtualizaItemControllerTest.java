@@ -40,7 +40,7 @@ class AtualizaItemControllerTest {
 
         var itemRequest =
 
-                new NovoItemRequest("arroz",
+                new AtualizaItemRequest("arroz",
                         "alimenticio",
                         "graos",
                         100,
@@ -50,7 +50,7 @@ class AtualizaItemControllerTest {
 
 
         var request = MockMvcRequestBuilders
-                .put("/item/{id}/atualiza",Integer.MAX_VALUE)
+                .put("/item/{id}",Integer.MAX_VALUE)
                 .contentType(APPLICATION_JSON)
                 .content(payload)
                 .header("Accept-Language", "pt-br");
@@ -59,7 +59,7 @@ class AtualizaItemControllerTest {
         var resolvedException = mockMvc.perform(request)
                 .andExpect(MockMvcResultMatchers
                         .status()
-                        .isBadRequest())
+                        .isNotFound())
                 .andReturn()
                 .getResolvedException();
 
@@ -78,7 +78,7 @@ class AtualizaItemControllerTest {
 
         var itemRequest =
 
-                new NovoItemRequest("arroz",
+                new AtualizaItemRequest("arroz",
                         "alimenticio",
                         "graos",
                         100,
@@ -95,7 +95,7 @@ class AtualizaItemControllerTest {
         var payload = mapper.writeValueAsString(itemRequest);
 
         var request = MockMvcRequestBuilders
-                .put("/item/{id}/atualiza",item.getId()).contentType(APPLICATION_JSON)
+                .put("/item/{id}",item.getId()).contentType(APPLICATION_JSON)
                 .content(payload)
                 .header("Accept-Language","pt-br");
 
@@ -112,11 +112,11 @@ class AtualizaItemControllerTest {
 
         var itemAtualizado = possivelItem.get();
 
-        Assertions.assertEquals(itemRequest.nome(),itemAtualizado.getNome());
-        Assertions.assertEquals(itemRequest.categoria(),itemAtualizado.getCategoria());
-        Assertions.assertEquals(itemRequest.descricao(),itemAtualizado.getDescricao());
-        Assertions.assertEquals(itemRequest.quantidade(),itemAtualizado.getQuantidade());
-        Assertions.assertEquals(itemRequest.preco(),itemAtualizado.getPreco());
+        Assertions.assertEquals(itemRequest.getNome(),itemAtualizado.getNome());
+        Assertions.assertEquals(itemRequest.getCategoria(),itemAtualizado.getCategoria());
+        Assertions.assertEquals(itemRequest.getDescricao(),itemAtualizado.getDescricao());
+        Assertions.assertEquals(itemRequest.getQuantidade(),itemAtualizado.getQuantidade());
+        Assertions.assertEquals(itemRequest.getPreco(),itemAtualizado.getPreco());
 
     }
 }

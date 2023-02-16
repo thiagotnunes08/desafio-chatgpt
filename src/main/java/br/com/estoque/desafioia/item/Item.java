@@ -28,7 +28,7 @@ public class Item {
         Assert.isTrue(StringUtils.hasText(nome), "nome é obrigatório");
         Assert.isTrue(StringUtils.hasText(descricao), "descricao é obrigatória");
         Assert.isTrue(quantidade >= 0, "quantidade  deve ser positiva");
-        Assert.isTrue(preco.compareTo(BigDecimal.ZERO) >= 0, "preco  deve ser posbotoitivo");
+        Assert.isTrue(preco.compareTo(BigDecimal.ZERO) >= 0, "preco  deve ser positivo");
 
         this.nome = nome;
         this.descricao = descricao;
@@ -69,14 +69,13 @@ public class Item {
     }
 
 
-    public void logicaAtualiza(NovoItemRequest request) {
+    public void atualizaItemCompleto(AtualizaItemRequest request) {
 
-        if (request.nome() != null) this.nome = request.nome();
-        if (request.descricao() != null) this.descricao = request.descricao();
-        if (request.categoria() != null) this.categoria = request.categoria();
-        if (request.quantidade() != null) this.quantidade = request.quantidade();
-        if (request.preco() != null) this.preco = request.preco();
-
+       if (request.temNomeValido()) this.nome = request.getNome();
+       if (request.temCategoriaValida()) this.categoria = request.getCategoria();
+       if (request.temDescricaoValida()) this.descricao = request.getDescricao();
+       if (request.temPrecoValido()) this.preco = request.getPreco();
+       if (request.temQuantidadeValida()) this.quantidade = request.getQuantidade();
     }
 
 }
