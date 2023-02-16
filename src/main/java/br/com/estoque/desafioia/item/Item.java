@@ -1,7 +1,9 @@
 package br.com.estoque.desafioia.item;
+
 import jakarta.persistence.*;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -65,4 +67,15 @@ public class Item {
     public BigDecimal getPreco() {
         return preco;
     }
+
+
+    public void atualizaItemCompleto(AtualizaItemRequest request) {
+
+       if (request.temNomeValido()) this.nome = request.getNome();
+       if (request.temCategoriaValida()) this.categoria = request.getCategoria();
+       if (request.temDescricaoValida()) this.descricao = request.getDescricao();
+       if (request.temPrecoValido()) this.preco = request.getPreco();
+       if (request.temQuantidadeValida()) this.quantidade = request.getQuantidade();
+    }
+
 }
