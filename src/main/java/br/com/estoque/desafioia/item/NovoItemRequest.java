@@ -4,6 +4,7 @@ import br.com.estoque.desafioia.compartilhado.CampoUnico;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
 public record NovoItemRequest(
@@ -25,4 +26,5 @@ public record NovoItemRequest(
     public Item toModel() {
         return new Item(nome, descricao, categoria, quantidade, preco);
     }
+
 }
